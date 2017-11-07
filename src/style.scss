@@ -1,0 +1,13 @@
+@import 'test';
+$mycol: #333;
+
+.hello {
+  color: $test;
+}
+h1 {
+	font-family: sans-serif;
+}
+
+#notLoggedIn, #loggedIn {
+	display: none;
+}

@@ -3,11 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>hey</title>
-	<style>
-	#notLoggedIn, #loggedIn {
-		display: none;
-	}
-	</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -18,87 +14,13 @@
 
 	<div id="loggedIn">
 		<h1></h1>
+		<p class="extraone">some text</p>
 		<p id="setVal"></p>
 		<input id="testInputField" type="text" />
 		<button id="testVal">TEST</button>
 	</div>
 
-<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyAaB-Jh7AwwKwiauabB0oTSY0WLIXMC5RQ",
-    authDomain: "newagent-b1fcd.firebaseapp.com",
-    databaseURL: "https://newagent-b1fcd.firebaseio.com",
-    projectId: "newagent-b1fcd",
-    storageBucket: "newagent-b1fcd.appspot.com",
-    messagingSenderId: "740869263106"
-  };
-  firebase.initializeApp(config);
-  var rootRef = firebase.database().ref();
+<script src="bundle.js"></script>
 
-
-// function signIn(){
-//   // Using a redirect.
-//   firebase.auth().getRedirectResult().then(function(result) {
-//     if (result.credential) {
-//       // This gives you a Google Access Token.
-//       var token = result.additionalUserInfo.profile.id;
-//       console.log(token);
-//       var adaRef = firebase.database().ref(token);
-//       // var newMessageRef = adaRef.push();
-//       	adaRef.set({
-// 		  'tasks': 'looks good!'
-// 		});
-//     }
-//     else {
-//     	signIn();
-//     }
-//     var user = result.user;
-//   });
-// }
-
-var userId;
-
-function submitTestField(){
-	var val = document.getElementById('testInputField').value;
-	console.log(val);
-	var adaRef = firebase.database().ref(userId);
-	adaRef.set({
-	  'tasks': val
-	});
-}
-
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    console.log(user);
-    userId = user.uid;
-    document.getElementById('loggedIn').style.display = 'block';
-    document.querySelector('#loggedIn h1').innerHTML = 'Hey, ' + user.displayName;
-    document.getElementById('testVal').addEventListener('click', submitTestField);
-    var adaRef = firebase.database().ref(userId);
-    adaRef.on("value", function(snapshot) {
-    document.getElementById('setVal').innerHTML = snapshot.val().tasks;
-      console.log(snapshot.val());
-    }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    });
-  } else {
-    // No user is signed in.
-    // signIn();
-    document.getElementById('notLoggedIn').style.display = 'block';
-    document.getElementById('signInBtn').addEventListener('click', signIn);
-  }
-});
-
-function signIn(){
-  // Start a sign in process for an unauthenticated user.
-  var provider = new firebase.auth.GoogleAuthProvider();
-  provider.addScope('profile');
-  provider.addScope('email');
-  firebase.auth().signInWithRedirect(provider);
-}
-</script>
 </body>
 </html>

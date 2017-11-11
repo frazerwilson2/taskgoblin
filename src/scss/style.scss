@@ -1,8 +1,9 @@
-@import 'test';
-$mycol: #333;
+@import 'ui';
+@import 'background';
+@import 'monster';
 
 .hello {
-  color: $test;
+  color: red;
 }
 h1 {
 	font-family: sans-serif;

@@ -1,0 +1,187 @@
+#template .pep {
+  display: none;
+}
+.pep {
+  position: absolute;
+  width: 80px;
+  height:80px;
+  top: 50%;
+  left:50%;
+  z-index: 1;
+  -webkit-transform: translate(-20%,-50%);
+  transform: translate(-20%,-50%);
+}
+.mbody {
+  fill: #ccc;
+}
+.pep .name {
+  opacity: 0;
+  min-width: 80px;
+  background: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  color: #333;
+  padding: 5px;
+  top: -45px;
+  left: -0px;
+  text-align: center;
+  border-radius: 4px;
+}
+.pep .name span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 120px;
+  min-width: 70px;
+  display: inline-block;
+}
+.pep .name:after {
+  content: "";
+  width: 0px;
+  float: left;
+  display: inline-block;
+  border-top: 10px rgba(255, 255, 255, 0.8) solid;
+  border-left: 10px transparent solid;
+  border-right: 3px transparent solid;
+  position: relative;
+  top: 20px;
+  margin-top: -15px;
+}
+.pep:active .mbody {
+  fill: #ccc;
+}
+
+.pep:hover {
+  z-index: 10;
+}
+
+.pep:hover .name, .pep.pep-active .name {
+  opacity: 1;
+}
+
+
+.pupil {
+  fill: #000;
+  animation: goggle 3s infinite;
+  opacity: 0.5;
+}
+
+.spots{
+  fill:#F7931E;
+}
+
+.slide {
+  animation: slide 4s infinite;
+  transform-origin:bottom; 
+  opacity: 0.5; 
+}
+.wobble {
+  animation: wobble 4s infinite;
+  transform-origin:bottom center;
+  animation-timing-function: linear;
+  opacity: 0.5;
+}
+.shape {
+  animation: breathe 1s infinite;
+  transform-origin:bottom;
+  opacity: 0.5;
+}
+
+.grow {
+  animation: grow 5s infinite;
+  opacity: 0.5;
+}
+
+@keyframes slide{
+  0%,100%{
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  25%{
+    transform: translateX(4%);
+  }
+  75%{
+    transform: translateX(-4%);
+  }  
+}
+
+@keyframes wobble{
+  0%,100%{
+    transform: rotate(0deg);
+    opacity: 1;
+  }
+  25%{
+    transform:
+      rotate(5deg)
+  }
+  75%{
+    transform:
+      rotate(-5deg)
+  }  
+}
+
+@keyframes breathe{
+  0%, 100%{
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  50%{
+    transform:
+      scaleY(.96)
+      scaleX(1.04)
+  }
+}
+
+@keyframes grow{
+  0%, 100%{
+    transform: scaleY(1.05) scaleX(1.05);
+      opacity: 1;
+  }
+  50%{
+    transform:
+      scaleY(0.95)
+      scaleX(0.95)
+  }
+}
+
+@keyframes goggle{
+  0%,100%{
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  25%{
+    transform: translateY(-5px);
+    transform: translateX(-5px);
+  }
+  75%{
+    transform: translateY(0px);
+    transform: translateX(5px);
+  }  
+}
+
+.extra {fill:#16a085; color: #16a085;}
+.minny {fill:#2ecc71; color: #2ecc71;}
+.spike {fill:#2980b9; color: #2980b9;}
+.lou {fill:#9b59b6; color: #9b59b6;}
+.other {fill:#34495e; color: #34495e;}
+.thingy {fill:#e67e22; color: #e67e22;}
+.magic {fill:#f39c12; color: #f39c12;}
+.crystal {fill:#d35400; color: #d35400;}
+.arou {fill:#4DD0E1; color: #4DD0E1;}
+.zen {fill:#7986CB; color: #7986CB;}
+.panda {fill:#a9e446; color: #a9e446;}
+
+.delay-1 g, .delay-1 path, .delay-1 circle, .delay-1 ellipse {
+  animation-delay: -1s !important;
+}
+
+.delay-2 g, .delay-2 path, .delay-2 circle, .delay-2 ellipse {
+  animation-delay: -2s !important;
+}
+
+.delay-3 g, .delay-3 path, .delay-3 circle, .delay-3 ellipse {
+  animation-delay: -1.5s !important;
+}
+
+.delay-4 g, .delay-4 path, .delay-4 circle, .delay-4 ellipse {
+  animation-delay: -2.5s !important;
+}

@@ -15,7 +15,7 @@ function submitTestField(){
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
-    console.log(user);
+    // console.log(user);
     userId = user.uid;
     document.getElementById('loggedIn').style.display = 'block';
     document.querySelector('#loggedIn h1').innerHTML = 'Hey, ' + user.displayName;
@@ -23,7 +23,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     var adaRef = firebase.database().ref(userId);
     adaRef.on("value", function(snapshot) {
     document.getElementById('setVal').innerHTML = snapshot.val().tasks;
-      console.log(snapshot.val());
+      // console.log(snapshot.val());
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });

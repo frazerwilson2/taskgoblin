@@ -1,7 +1,7 @@
-#template .pep {
+#template .tg {
   display: none;
 }
-.pep {
+.tg {
   position: absolute;
   width: 80px;
   height:80px;
@@ -14,7 +14,7 @@
 .mbody {
   fill: #ccc;
 }
-.pep .name {
+.tg .name {
   opacity: 0;
   min-width: 80px;
   background: rgba(255, 255, 255, 0.8);
@@ -26,7 +26,7 @@
   text-align: center;
   border-radius: 4px;
 }
-.pep .name span {
+.tg .name span {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -34,7 +34,7 @@
   min-width: 70px;
   display: inline-block;
 }
-.pep .name:after {
+.tg .name:after {
   content: "";
   width: 0px;
   float: left;
@@ -46,15 +46,15 @@
   top: 20px;
   margin-top: -15px;
 }
-.pep:active .mbody {
+.tg:active .mbody {
   fill: #ccc;
 }
 
-.pep:hover {
+.tg:hover {
   z-index: 10;
 }
 
-.pep:hover .name, .pep.pep-active .name {
+.tg:hover .name, .tg.tg-active .name {
   opacity: 1;
 }
 

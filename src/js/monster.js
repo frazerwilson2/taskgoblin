@@ -22,25 +22,18 @@ var tgMonster = (function(){
         var chosenMonst = Math.ceil(Math.random() * props.TypeCount);
         
         return {
-            Type: chosenMonst,
-            Position: {
+            Type: deets ? deets.Type : chosenMonst,
+            Position: deets ? deets.Position : {
                 Top: newTop,
                 Left: newLeft
             },
-            Colour: chosenClr,
-            SetPosition: SetPosition,
+            Colour: deets ? deets.Colour : chosenClr,
             BuildElement: BuildElement
         };
     };
 
     var Monster = function(existing) {
-        // console.log(existing);
         return self.GenerateMonster(existing);
-    };
-
-    var SetPosition = function(top, left){
-        this.Props.Position.Top = top;
-        this.Props.Position.Left = left;
     };
 
     var BuildElement = function(monst, parent) {
@@ -51,7 +44,6 @@ var tgMonster = (function(){
  newToDo.classList.add('delay-' + randomSpeed);
  //        // newToDo.attr('id', monst.id).addClass('delay-' + randomSpeed);
         newToDo.querySelector('.mbody').classList.add(monst.Monster.Colour);
-        console.log(newToDo);
         parent.appendChild(newToDo);
  //        newToDo.appendTo(parent);
         

@@ -14101,67 +14101,11 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_style_scss__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scss_style_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_interactjs__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_interactjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_interactjs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_js__ = __webpack_require__(83);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__main_js__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_js__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__main_js__ = __webpack_require__(167);
 
 
 
-
-
-__WEBPACK_IMPORTED_MODULE_1_interactjs___default()('.draggable')
-  .draggable({
-    // enable inertial throwing
-    inertia: true,
-    // keep the element within the area of it's parent
-    // restrict: {
-    //   restriction: "parent",
-    //   endOnly: true,
-    //   elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-    // },
-    // enable autoScroll
-    autoScroll: true,
-
-    // call this function on every dragmove event
-    onmove: dragMoveListener,
-    // call this function on every dragend event
-    onend: function (event) {
-    	var boxPc = {width: (50 / window.innerWidth) * 100, height: (50 / window.innerHeight) * 100}
-    	console.log(boxPc);
-    	// console.log(window.innerWidth, window.innerHeight);
-    	var rect = event.target.getBoundingClientRect();
-
-    	var top = (rect.top / window.innerHeight) * 100;
-    	var right = (rect.right / window.innerWidth) * 100;
-    	var bottom = (rect.bottom / window.innerHeight) * 100;
-    	var left = (rect.left / window.innerWidth) * 100;
-console.log(top, right, bottom, left);
-    	if(top < 0 - boxPc.height){console.log('outside top');}
-    	if(right > 100 + boxPc.height){console.log('outside right');}
-    	if(bottom > 100 + boxPc.height){console.log('outside bottom');}
-    	if(left < 0 - boxPc.width){console.log('outside left');}
-    }
-  });
-
-  function dragMoveListener (event) {
-    var target = event.target,
-        // keep the dragged position in the data-x/data-y attributes
-        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-    // translate the element
-    target.style.webkitTransform =
-    target.style.transform =
-      'translate(' + x + 'px, ' + y + 'px)';
-
-    // update the posiion attributes
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
-  }
-
-  // this is used later in the resizing and gesture demos
-  window.dragMoveListener = dragMoveListener;
 
 /***/ }),
 /* 81 */
@@ -20176,7 +20120,7 @@ function submitTestField(){
 __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
-    console.log(user);
+    // console.log(user);
     userId = user.uid;
     document.getElementById('loggedIn').style.display = 'block';
     document.querySelector('#loggedIn h1').innerHTML = 'Hey, ' + user.displayName;
@@ -20184,7 +20128,7 @@ __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().onAuthStateCha
     var adaRef = __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref(userId);
     adaRef.on("value", function(snapshot) {
     document.getElementById('setVal').innerHTML = snapshot.val().tasks;
-      console.log(snapshot.val());
+      // console.log(snapshot.val());
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     });
@@ -32375,9 +32319,17 @@ function stop(id) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__monster_js__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_js__ = __webpack_require__(171);
-// import tgStorage from './storage.js';
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__storage_js__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_interactjs__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_interactjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_interactjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__monster_js__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_js__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interactOpts_js__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__monsterui_js__ = __webpack_require__(174);
+
+
+
+
 
 
 
@@ -32385,48 +32337,27 @@ var tgUiFuncs = (function(){
 
 var toDoRecords = null;
 
-// function setPeps() {
-//     var pepList = document.querySelectorAll('#toDoHolder .pep');
-//     for (var i = pepList.length - 1; i >= 0; i--) {
-//         pepList[i].pep({
-//             //constrainTo: 'window',
-//             useBoundingClientRect: true,
-//             rest: function() {
-//                 var thisEl = this.el;
-//                 var toDoId = el(thisEl).attr('id');
-//                 setToDoPos(el(thisEl).position(), toDoId);
-//                 var winX = window.innerWidth;
-//                 var winy = window.innerHeight;
-//                 var boxX = el(thisEl).position().left;
-//                 var boxY = el(thisEl).position().top;
-//                 if (boxX > winX || boxX < 0 || boxY > winy || boxY < 0) {
-//                     el(thisEl).remove();
-//                     removeToDo(toDoId);
-//                 }
-//             }
-//         });
-//     };
-// }
+function setInteract(){
+    __WEBPACK_IMPORTED_MODULE_1_interactjs___default()('.tg').draggable(__WEBPACK_IMPORTED_MODULE_4__interactOpts_js__["a" /* default */]);
+}
 
 function addNewItem(value) {
     if (!value) { return }
     var newId = Date.now();
     var newToDoObj = { id: newId, name: value };
-    newToDoObj.Monster = new __WEBPACK_IMPORTED_MODULE_0__monster_js__["a" /* default */]()
-// console.log(newToDoObj);
-    toDoRecords = toDoRecords ? toDoRecords : [];
+    newToDoObj.Monster = new __WEBPACK_IMPORTED_MODULE_2__monster_js__["a" /* default */]()
+    toDoRecords = toDoRecords || [];
     toDoRecords.push(newToDoObj);
-    // // tgStorage.Store(toDoRecords);
-    // bindBgClass(toDoRecords.length);
+    __WEBPACK_IMPORTED_MODULE_0__storage_js__["a" /* default */].Store(toDoRecords);
+    __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].bindBgClass(toDoRecords.length);
 
-    buildToDoMonster(newToDoObj);
-
-    // // setPeps();
-    Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#toDoItem').value = "";
+    __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].buildToDoMonster(newToDoObj);
+    setInteract();
+    Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#toDoItem').value = "";
 }
 
 function onNewItemSubmit() {
-    var inputVal = Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#toDoItem').value;
+    var inputVal = Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#toDoItem').value;
     if (!inputVal) {
         console.log('no name given');
         return;
@@ -32434,79 +32365,39 @@ function onNewItemSubmit() {
     addNewItem(inputVal);
 }
 
-// function setToDoPos(pos, id) {
-//     for (var i = 0; i < toDoRecords.length; i++) {
-//         if (toDoRecords[i].id === parseInt(id)) {
-//             toDoRecords[i].Monster.SetPosition(pos.top, pos.left);
-//         }
-//     }
-
-//     // tgStorage.Store(toDoRecords);
-// }
-
-// function removeToDo(id) {
-//     for (var i = 0; i < toDoRecords.length; i++) {
-//         if (toDoRecords[i].id === parseInt(id)) {
-//             toDoRecords.splice(i, 1);
-//         }
-//     }
-
-//     // tgStorage.Store(toDoRecords);
-//     console.log(toDoRecords.length);
-//     bindBgClass(toDoRecords.length);
-// }
-
-function buildToDoMonster(item) {
-    // console.log(item);
-    var newToDo = item.Monster.BuildElement(item, Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#toDoHolder'));
-    newToDo.querySelector('.name span').innerHTML = item.name;
-}
-
 document.addEventListener("DOMContentLoaded", function(event) {
-    // toDoRecords = tgStorage.Retrieve();
-    // if(toDoRecords){
-    //     bindBgClass(toDoRecords.length);
-    //     toDoRecords.forEach(function(item) {
-    //         item.Monster = new tgMonster(item.Monster);
-    //         // buildToDoMonster(item);
-    //         // console.log(item.Monster);
-    //     });
+    toDoRecords = __WEBPACK_IMPORTED_MODULE_0__storage_js__["a" /* default */].Retrieve();
+    if(toDoRecords){
+        __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].bindBgClass(toDoRecords.length);
+        toDoRecords.forEach(function(item) {
+            item.Monster = new __WEBPACK_IMPORTED_MODULE_2__monster_js__["a" /* default */](item.Monster);
+            __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].buildToDoMonster(item);
+            __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].SetPosition(item.id, item.Monster.Position);
+            setInteract();
+        });
 
         // setPeps();
-        // el('#toDoItem').focus();
-    // }
+        Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#toDoItem').focus();
+    }
 });
 
-// function bindBgClass (num) {
-//     el('body').removeClass('sunset');
-//     el('body').removeClass('evening');
-//     var numClass;
-//     if(num > 3){
-//         numClass = 'sunset';
-//     }
-//     if(num > 5){
-//         numClass = 'evening';
-//     }
-//     el('body').addClass(numClass);
-// }
-
-Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#toDoItem').addEventListener("keyup", function(e) {
+Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#toDoItem').addEventListener("keyup", function(e) {
     if (e.keyCode === 13) {
         onNewItemSubmit();
     }
 });
 
-Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#submitDoTo').addEventListener("click", function(){
+Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#submitDoTo').addEventListener("click", function(){
     onNewItemSubmit();
 });
 
-Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#action .toggle').addEventListener("click", function(){
-    if(Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#action').classList.contains('open')){
-        Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#action').classList.remove('open');
+Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#action .toggle').addEventListener("click", function(){
+    if(Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#action').classList.contains('open')){
+        Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#action').classList.remove('open');
     }
     else {
-        Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#action').classList.add('open');    
-        Object(__WEBPACK_IMPORTED_MODULE_1__helpers_js__["a" /* default */])('#toDoItem').focus();
+        Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#action').classList.add('open');    
+        Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#toDoItem').focus();
     }
 });
 
@@ -32551,25 +32442,18 @@ var tgMonster = (function(){
         var chosenMonst = Math.ceil(Math.random() * props.TypeCount);
         
         return {
-            Type: chosenMonst,
-            Position: {
+            Type: deets ? deets.Type : chosenMonst,
+            Position: deets ? deets.Position : {
                 Top: newTop,
                 Left: newLeft
             },
-            Colour: chosenClr,
-            SetPosition: SetPosition,
+            Colour: deets ? deets.Colour : chosenClr,
             BuildElement: BuildElement
         };
     };
 
     var Monster = function(existing) {
-        // console.log(existing);
         return self.GenerateMonster(existing);
-    };
-
-    var SetPosition = function(top, left){
-        this.Props.Position.Top = top;
-        this.Props.Position.Left = left;
     };
 
     var BuildElement = function(monst, parent) {
@@ -32580,7 +32464,6 @@ var tgMonster = (function(){
  newToDo.classList.add('delay-' + randomSpeed);
  //        // newToDo.attr('id', monst.id).addClass('delay-' + randomSpeed);
         newToDo.querySelector('.mbody').classList.add(monst.Monster.Colour);
-        console.log(newToDo);
         parent.appendChild(newToDo);
  //        newToDo.appendTo(parent);
         
@@ -32603,6 +32486,148 @@ var tgMonster = (function(){
 var findEl = function(selector) { return document.querySelector(selector);  };
 
 /* harmony default export */ __webpack_exports__["a"] = (findEl);
+
+/***/ }),
+/* 172 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__monsterui_js__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__storage_js__ = __webpack_require__(173);
+
+
+
+var toDoRecords = [];
+toDoRecords = __WEBPACK_IMPORTED_MODULE_1__storage_js__["a" /* default */].Retrieve();
+
+var opts = {
+    // enable inertial throwing
+    inertia: true,
+    // keep the element within the area of it's parent
+    // restrict: {
+    //   restriction: "parent",
+    //   endOnly: true,
+    //   elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    // },
+    // enable autoScroll
+    autoScroll: true,
+
+    // call this function on every dragmove event
+    onmove: dragMoveListener,
+    // call this function on every dragend event
+    onend: onDragEnd
+  }
+
+	var boxPc = {width: (50 / window.innerWidth) * 100, height: (50 / window.innerHeight) * 100}
+	// console.log(boxPc);
+
+  function onDragEnd(event){
+	// console.log(window.innerWidth, window.innerHeight);
+	var rect = event.target.getBoundingClientRect();
+
+	var top = (rect.top / window.innerHeight) * 100;
+	var right = (rect.right / window.innerWidth) * 100;
+	var bottom = (rect.bottom / window.innerHeight) * 100;
+	var left = (rect.left / window.innerWidth) * 100;
+	// console.log(top, right, bottom, left);
+	var elId = event.target.id;
+	if(top < 0 - boxPc.height){console.log('outside top');__WEBPACK_IMPORTED_MODULE_0__monsterui_js__["a" /* default */].removeToDo(elId, toDoRecords)}
+	if(right > 100 + boxPc.height){console.log('outside right');__WEBPACK_IMPORTED_MODULE_0__monsterui_js__["a" /* default */].removeToDo(elId, toDoRecords)}
+	if(bottom > 100 + boxPc.height){console.log('outside bottom');__WEBPACK_IMPORTED_MODULE_0__monsterui_js__["a" /* default */].removeToDo(elId, toDoRecords)}
+	if(left < 0 - boxPc.width){console.log('outside left');__WEBPACK_IMPORTED_MODULE_0__monsterui_js__["a" /* default */].removeToDo(elId, toDoRecords)}
+  }
+
+  function dragMoveListener (event) {
+    var target = event.target,
+        // keep the dragged position in the data-x/data-y attributes
+        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+    // translate the element
+    target.style.webkitTransform =
+    target.style.transform =
+      'translate(' + x + 'px, ' + y + 'px)';
+
+    // update the posiion attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+  }
+
+  // this is used later in the resizing and gesture demos
+  window.dragMoveListener = dragMoveListener;
+
+  /* harmony default export */ __webpack_exports__["a"] = (opts);
+
+/***/ }),
+/* 173 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var storageName = 'TaskGoblinLocal';
+
+var tgStorage = {
+    Store: function(value) {
+        localStorage.setItem(storageName, JSON.stringify(value));
+    },
+    Retrieve: function() {
+        var value = localStorage.getItem(storageName);
+        if (value) {
+            return JSON.parse(value);
+        }
+        return null;
+    }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (tgStorage);
+
+/***/ }),
+/* 174 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_js__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__storage_js__ = __webpack_require__(173);
+
+
+
+const monsterUI = {
+
+	buildToDoMonster: function (item) {
+	    // console.log(item);
+	    var newToDo = item.Monster.BuildElement(item, Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])('#toDoHolder'));
+	    newToDo.querySelector('.name span').innerHTML = item.name;
+	},
+	removeToDo: function (id, toDoRecords) {
+	    for (var i = 0; i < toDoRecords.length; i++) {
+	        if (toDoRecords[i].id === parseInt(id)) {
+	            toDoRecords.splice(i, 1);
+	        }
+	    }
+	    __WEBPACK_IMPORTED_MODULE_1__storage_js__["a" /* default */].Store(toDoRecords);
+	    console.log(toDoRecords.length);
+	    monsterUI.bindBgClass(toDoRecords.length);
+	},
+	SetPosition: function(monst, pos){
+		document.getElementById(monst).style.top = pos.Top + 'px';
+		document.getElementById(monst).style.left = pos.Left + 'px';
+console.log(monst, pos);
+	},
+	bindBgClass: function (num) {
+	    Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])('body').classList.remove('sunset');
+	    Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])('body').classList.remove('evening');
+	    var numClass;
+	    if(num > 3){
+	        numClass = 'sunset';
+	    }
+	    if(num > 5){
+	        numClass = 'evening';
+	    }
+	    Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])('body').classList.add(numClass);
+	}
+
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (monsterUI);
 
 /***/ })
 /******/ ]);

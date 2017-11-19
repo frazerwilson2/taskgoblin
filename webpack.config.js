@@ -42,6 +42,6 @@ module.exports = {
 //    assetNameRegExp: /\.min\.css$/,
     cssProcessorOptions: { discardComments: { removeAll: true } }
   }),
-	new UglifyJSPlugin()
+	//new UglifyJSPlugin()
   ]
 };

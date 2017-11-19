@@ -43,6 +43,4 @@ function signIn(){
   firebase.auth().signInWithRedirect(provider);
 }
 
-console.log('working cleo');
-
 })();

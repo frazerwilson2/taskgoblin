@@ -1,4 +1,6 @@
-var tgMonster = function(){
+import el from './helpers.js';
+
+var tgMonster = (function(){
     var self = {};
 
     var colors = ['extra', 'minny', 'spike', 'lou', 'other', 'thingy', 'magic', 'crystal', 'arou', 'zen', 'panda'];
@@ -9,10 +11,14 @@ var tgMonster = function(){
         TypeCount: 3
     };
 
-    self.GenerateMonster = function() {
+    function randomPos() {
+        return Math.round(Math.random() * 200) - Math.round(Math.random() * 200);
+    }
+
+    self.GenerateMonster = function(deets) {
         var chosenClr = colors[Math.round(Math.random() * colorLen)];
-        var newLeft = $(window).width() / 2 + randomPos();
-        var newTop = $(window).height() / 2 + randomPos();
+        var newLeft = window.innerWidth / 2 + randomPos();
+        var newTop = window.innerHeight / 2 + randomPos();
         var chosenMonst = Math.ceil(Math.random() * props.TypeCount);
         
         return {
@@ -21,37 +27,39 @@ var tgMonster = function(){
                 Top: newTop,
                 Left: newLeft
             },
-            Colour: chosenClr
+            Colour: chosenClr,
+            SetPosition: SetPosition,
+            BuildElement: BuildElement
         };
     };
 
     var Monster = function(existing) {
-        if(existing) {
-            this.Props = existing.Props;
-        }
-        else {
-            this.Props = self.GenerateMonster();
-        }
+        // console.log(existing);
+        return self.GenerateMonster(existing);
     };
 
-    Monster.prototype.SetPosition = function(top, left){
+    var SetPosition = function(top, left){
         this.Props.Position.Top = top;
         this.Props.Position.Left = left;
     };
 
-    Monster.prototype.BuildElement = function(id, parent) {
-        var newToDo = $("#template").find('#monst' + this.Props.Type).clone();
+    var BuildElement = function(monst, parent) {
+        var newToDo = el("#template #monst" + monst.Monster.Type).cloneNode(true);
         var randomSpeed = Math.ceil(Math.random() * anims);
  
-        $(newToDo).attr('id', id).addClass('delay-' + randomSpeed);
-        $(newToDo).find('.mbody').addClass(this.Props.Colour);
-        newToDo.appendTo(parent);
+ newToDo.id = monst.id;
+ newToDo.classList.add('delay-' + randomSpeed);
+ //        // newToDo.attr('id', monst.id).addClass('delay-' + randomSpeed);
+        newToDo.querySelector('.mbody').classList.add(monst.Monster.Colour);
+        console.log(newToDo);
+        parent.appendChild(newToDo);
+ //        newToDo.appendTo(parent);
         
-        newToDo.css({ top: this.Props.Position.Top, left: this.Props.Position.Left });
+ //        newToDo.css({ top: monst.Monster.Position.Top, left: monst.Monster.Position.Left });
         return newToDo;
     };
 
     return Monster;
-};
+})();
 
 export default tgMonster;

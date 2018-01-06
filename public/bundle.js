@@ -14216,11 +14216,13 @@ var tgUsers = (function($){
 var userId;
 
 function submitTestField(){
-	var val = document.getElementById('testInputField').value;
+	var val = document.getElementById('toDoItem').value;
 	console.log(val);
-	var adaRef = __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref(userId);
+  // convert to public func so user can post task and retrieve data
+	var adaRef = __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref(Date.now());
 	adaRef.set({
-	  'tasks': val
+	  // 'tasks': val
+    12334543558769: {test1:"val", name: "test", type: 3}
 	});
 }
 
@@ -14228,29 +14230,32 @@ __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().onAuthStateCha
   if (user) {
     // User is signed in.
     // console.log(user);
-    userId = user.uid;
-    document.getElementById('loggedIn').style.display = 'block';
-    document.querySelector('#loggedIn h1').innerHTML = 'Hey, ' + user.displayName;
-    document.getElementById('testVal').addEventListener('click', submitTestField);
-    var adaRef = __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref(userId);
-    adaRef.on("value", function(snapshot) {
-    document.getElementById('setVal').innerHTML = snapshot.val().tasks;
-      // console.log(snapshot.val());
-    }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    });
+    setUpSignIn(user);
   } else {
     // No user is signed in.
-    // signIn();
     showSignIn();
   }
 });
+
+function setUpSignIn(user){
+    userId = user.uid;
+    document.body.classList.add('logged-in');
+    document.querySelector('#userName').innerHTML = 'You\'re ' + user.displayName;
+    document.getElementById('submitDoTo').addEventListener('click', submitTestField);
+    // var adaRef = firebase.database().ref(userId);
+    // adaRef.on("value", function(snapshot) {
+    // document.getElementById('setVal').innerHTML = snapshot.val().tasks;
+    //   console.log(snapshot.val());
+    // }, function (errorObject) {
+    //   console.log("The read failed: " + errorObject.code);
+    // });
+};
 
 function showSignIn(){
     document.body.classList.add('logged-out');
     // document.getElementById('notLoggedIn').style.display = 'block';
     document.getElementById('signInBtn').addEventListener('click', signIn);
-}
+};
 
 function signIn(){
   // Start a sign in process for an unauthenticated user.
@@ -14258,7 +14263,7 @@ function signIn(){
   provider.addScope('profile');
   provider.addScope('email');
   __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().signInWithRedirect(provider);
-}
+};
 
 })();
 

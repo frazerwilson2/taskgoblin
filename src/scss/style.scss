@@ -9,8 +9,12 @@ h1 {
 	font-family: sans-serif;
 }
 
-#loggedIn {
+.post-task {
 	display: none;
+
+	.logged-in & {
+		display: block;
+	}
 }
 
 #drag-1, #drag-2 {

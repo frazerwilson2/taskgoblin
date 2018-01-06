@@ -6,7 +6,7 @@
 * ~~Replace jQuery references~~
 * ~~Register service worker~~
 * ~~Store todos to localStorage~~
-* logged out view
+* ~~logged out view~~
 * Store todos to Firebase
-* Sync with localstorage for full offline
+* Sync with localstorage/indexdb for full offline
 * Publish to Heroku/other for functional app

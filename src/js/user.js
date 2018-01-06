@@ -30,10 +30,15 @@ firebase.auth().onAuthStateChanged(function(user) {
   } else {
     // No user is signed in.
     // signIn();
-    document.getElementById('notLoggedIn').style.display = 'block';
-    document.getElementById('signInBtn').addEventListener('click', signIn);
+    showSignIn();
   }
 });
+
+function showSignIn(){
+    document.body.classList.add('logged-out');
+    // document.getElementById('notLoggedIn').style.display = 'block';
+    document.getElementById('signInBtn').addEventListener('click', signIn);
+}
 
 function signIn(){
   // Start a sign in process for an unauthenticated user.

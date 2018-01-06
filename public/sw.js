@@ -1,4 +1,4 @@
-var CACHE_NAME = 'tgoblin-v1';
+var CACHE_NAME = 'tgoblin-v1.3';
 var urlsToCache = [
   '/',
   '/styles.css',
@@ -20,6 +20,7 @@ self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
+        console.log(response);
         // Cache hit - return response
         if (response) {
           return response;

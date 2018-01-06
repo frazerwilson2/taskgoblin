@@ -1,3 +1,5 @@
+$uiBrand: #ACDD31;
+
 body {
   margin: 0;
   padding: 0;
@@ -45,7 +47,7 @@ li svg {
 }
 
 #action {
-  background: #ACDD31;
+  background: $uiBrand;
   position: absolute;
   left: 0px;
   bottom: 0px;
@@ -54,6 +56,10 @@ li svg {
   z-index: 99;
   transition: all 0.5s;
   -wekbit-transition: all 0.5s;
+
+  .logged-out & {
+      display: none;
+  }
 }
 #action .toggle {
   height: 100%;

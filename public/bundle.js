@@ -14242,10 +14242,15 @@ __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().onAuthStateCha
   } else {
     // No user is signed in.
     // signIn();
-    document.getElementById('notLoggedIn').style.display = 'block';
-    document.getElementById('signInBtn').addEventListener('click', signIn);
+    showSignIn();
   }
 });
+
+function showSignIn(){
+    document.body.classList.add('logged-out');
+    // document.getElementById('notLoggedIn').style.display = 'block';
+    document.getElementById('signInBtn').addEventListener('click', signIn);
+}
 
 function signIn(){
   // Start a sign in process for an unauthenticated user.

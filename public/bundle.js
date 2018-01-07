@@ -14133,11 +14133,13 @@ function continueResumableUpload(location, authWrapper, url, blob, chunkSize, ma
 
 
 
+var anims = 4;
+
 const monsterUI = {
 
 	buildToDoMonster: function (item) {
 	    // console.log(item);
-	    var newToDo = item.Monster.BuildElement(item, Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])('#toDoHolder'));
+	    var newToDo = monsterUI.BuildElement(item, Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])('#toDoHolder'));
 	    newToDo.querySelector('.name span').innerHTML = item.name;
 	},
 	removeToDo: function (id, toDoRecords) {
@@ -14166,8 +14168,20 @@ console.log(monst, pos);
 	        numClass = 'evening';
 	    }
 	    Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])('body').classList.add(numClass);
-	}
+	},
+    BuildElement: function(monst, parent) {
+	    var newToDo = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])("#template #monst" + monst.Monster.Type).cloneNode(true);
+	    var randomSpeed = Math.ceil(Math.random() * anims);
 
+		newToDo.id = monst.id;
+		newToDo.classList.add('delay-' + randomSpeed);
+		//// newToDo.attr('id', monst.id).addClass('delay-' + randomSpeed);
+	    newToDo.querySelector('.mbody').classList.add(monst.Monster.Colour);
+	    parent.appendChild(newToDo);
+		//newToDo.appendTo(parent);  
+		//newToDo.css({ top: monst.Monster.Position.Top, left: monst.Monster.Position.Left });
+    	return newToDo;
+    }
 }
 
 /* harmony default export */ __webpack_exports__["a"] = (monsterUI);
@@ -14180,9 +14194,7 @@ console.log(monst, pos);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_style_scss__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scss_style_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scss_style_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_js__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__main_js__ = __webpack_require__(168);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_js__ = __webpack_require__(168);
 
 
 
@@ -14215,57 +14227,90 @@ if ('serviceWorker' in navigator) {
 var tgUsers = (function($){
 var userId;
 
-function submitTestField(){
-	var val = document.getElementById('toDoItem').value;
-	console.log(val);
-  // convert to public func so user can post task and retrieve data
-	var adaRef = __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref(Date.now());
-	adaRef.set({
-	  // 'tasks': val
-    12334543558769: {test1:"val", name: "test", type: 3}
-	});
-}
+console.log('running');
 
-__WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    // console.log(user);
-    setUpSignIn(user);
-  } else {
-    // No user is signed in.
-    showSignIn();
+var publicFunc = {
+  Init: function(){
+    console.log('init called');
+    __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        userId = user.providerData[0].uid;
+        // console.log(firebase.database().ref('tasks'));
+        var ref = __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref("tasks");
+
+        // Attach an asynchronous callback to read the data at our posts reference
+        ref.on("value", function(snapshot) {
+          console.log(snapshot.val());
+        }, function (errorObject) {
+          console.log("The read failed: " + errorObject.code);
+        });
+        // console.log(user.providerData[0].uid);
+        setUpSignIn(user);
+      } else {
+        // No user is signed in.
+        showSignIn();
+      }
+    });
+  },
+  Post: function(task){
+    console.log(task);
+    submitTestField(task);
   }
-});
+};
 
-function setUpSignIn(user){
-    userId = user.uid;
-    document.body.classList.add('logged-in');
-    document.querySelector('#userName').innerHTML = 'You\'re ' + user.displayName;
-    document.getElementById('submitDoTo').addEventListener('click', submitTestField);
+  function submitTestField(task){
+    // var val = document.getElementById('toDoItem').value;
+    // convert to public func so user can post task and retrieve data
     // var adaRef = firebase.database().ref(userId);
-    // adaRef.on("value", function(snapshot) {
-    // document.getElementById('setVal').innerHTML = snapshot.val().tasks;
-    //   console.log(snapshot.val());
-    // }, function (errorObject) {
-    //   console.log("The read failed: " + errorObject.code);
+    // adaRef.set({
+    //   task: task
     // });
-};
+  
+  // Get a key for a new Post.
+  var newPostKey = __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref().child('tasks').push().key;
 
-function showSignIn(){
-    document.body.classList.add('logged-out');
-    // document.getElementById('notLoggedIn').style.display = 'block';
-    document.getElementById('signInBtn').addEventListener('click', signIn);
-};
+  // Write the new post's data simultaneously in the posts list and the user's post list.
+  var updates = {};
+  updates['/tasks/' + newPostKey] = task;
+  // updates['/user-posts/' + userId + '/' + newPostKey] = task;
 
-function signIn(){
-  // Start a sign in process for an unauthenticated user.
-  var provider = new __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth.GoogleAuthProvider();
-  provider.addScope('profile');
-  provider.addScope('email');
-  __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().signInWithRedirect(provider);
-};
+  return __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].database().ref().update(updates);
+  }
+
+  function setUpSignIn(user){
+      userId = user.uid;
+      document.body.classList.add('logged-in');
+      document.querySelector('#userName').innerHTML = 'You\'re ' + user.displayName;
+      document.getElementById('submitDoTo').addEventListener('click', submitTestField);
+      // var adaRef = firebase.database().ref(userId);
+      // adaRef.on("value", function(snapshot) {
+      // document.getElementById('setVal').innerHTML = snapshot.val().tasks;
+      //   console.log(snapshot.val());
+      // }, function (errorObject) {
+      //   console.log("The read failed: " + errorObject.code);
+      // });
+  };
+
+  function showSignIn(){
+      document.body.classList.add('logged-out');
+      // document.getElementById('notLoggedIn').style.display = 'block';
+      document.getElementById('signInBtn').addEventListener('click', signIn);
+  };
+
+  function signIn(){
+    // Start a sign in process for an unauthenticated user.
+    var provider = new __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth.GoogleAuthProvider();
+    provider.addScope('profile');
+    provider.addScope('email');
+    __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().signInWithRedirect(provider);
+  };
+
+return publicFunc;
 
 })();
+
+/* harmony default export */ __webpack_exports__["a"] = (tgUsers);
 
 /***/ }),
 /* 85 */
@@ -26443,12 +26488,18 @@ function stop(id) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_js__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interactOpts_js__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__monsterui_js__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__user_js__ = __webpack_require__(84);
 
 
 
 
 
 
+
+
+console.log(__WEBPACK_IMPORTED_MODULE_6__user_js__["a" /* default */]);
+
+__WEBPACK_IMPORTED_MODULE_6__user_js__["a" /* default */].Init();
 
 var tgUiFuncs = (function(){
 
@@ -26466,6 +26517,8 @@ function addNewItem(value) {
     toDoRecords = toDoRecords || [];
     toDoRecords.push(newToDoObj);
     __WEBPACK_IMPORTED_MODULE_0__storage_js__["a" /* default */].Store(toDoRecords);
+    console.log(newToDoObj);
+    __WEBPACK_IMPORTED_MODULE_6__user_js__["a" /* default */].Post(newToDoObj);
     __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].bindBgClass(toDoRecords.length);
 
     __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].buildToDoMonster(newToDoObj);
@@ -32519,7 +32572,6 @@ var tgMonster = (function(){
 
     var colors = ['extra', 'minny', 'spike', 'lou', 'other', 'thingy', 'magic', 'crystal', 'arou', 'zen', 'panda'];
     var colorLen = colors.length;
-    var anims = 4;
 
     var props = {
         TypeCount: 3
@@ -32541,28 +32593,12 @@ var tgMonster = (function(){
                 Top: newTop,
                 Left: newLeft
             },
-            Colour: deets ? deets.Colour : chosenClr,
-            BuildElement: BuildElement
+            Colour: deets ? deets.Colour : chosenClr
         };
     };
 
     var Monster = function(existing) {
         return self.GenerateMonster(existing);
-    };
-
-    var BuildElement = function(monst, parent) {
-        var newToDo = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_js__["a" /* default */])("#template #monst" + monst.Monster.Type).cloneNode(true);
-        var randomSpeed = Math.ceil(Math.random() * anims);
- 
- newToDo.id = monst.id;
- newToDo.classList.add('delay-' + randomSpeed);
- //        // newToDo.attr('id', monst.id).addClass('delay-' + randomSpeed);
-        newToDo.querySelector('.mbody').classList.add(monst.Monster.Colour);
-        parent.appendChild(newToDo);
- //        newToDo.appendTo(parent);
-        
- //        newToDo.css({ top: monst.Monster.Position.Top, left: monst.Monster.Position.Left });
-        return newToDo;
     };
 
     return Monster;

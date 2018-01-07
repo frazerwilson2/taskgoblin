@@ -5,7 +5,6 @@ var tgMonster = (function(){
 
     var colors = ['extra', 'minny', 'spike', 'lou', 'other', 'thingy', 'magic', 'crystal', 'arou', 'zen', 'panda'];
     var colorLen = colors.length;
-    var anims = 4;
 
     var props = {
         TypeCount: 3
@@ -27,28 +26,12 @@ var tgMonster = (function(){
                 Top: newTop,
                 Left: newLeft
             },
-            Colour: deets ? deets.Colour : chosenClr,
-            BuildElement: BuildElement
+            Colour: deets ? deets.Colour : chosenClr
         };
     };
 
     var Monster = function(existing) {
         return self.GenerateMonster(existing);
-    };
-
-    var BuildElement = function(monst, parent) {
-        var newToDo = el("#template #monst" + monst.Monster.Type).cloneNode(true);
-        var randomSpeed = Math.ceil(Math.random() * anims);
- 
- newToDo.id = monst.id;
- newToDo.classList.add('delay-' + randomSpeed);
- //        // newToDo.attr('id', monst.id).addClass('delay-' + randomSpeed);
-        newToDo.querySelector('.mbody').classList.add(monst.Monster.Colour);
-        parent.appendChild(newToDo);
- //        newToDo.appendTo(parent);
-        
- //        newToDo.css({ top: monst.Monster.Position.Top, left: monst.Monster.Position.Left });
-        return newToDo;
     };
 
     return Monster;

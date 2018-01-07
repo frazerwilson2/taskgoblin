@@ -4,6 +4,11 @@ import tgMonster from './monster.js';
 import el from './helpers.js';
 import opts from './interactOpts.js';
 import monsterUI from './monsterui.js';
+import users from './user.js';
+
+console.log(users);
+
+users.Init();
 
 var tgUiFuncs = (function(){
 
@@ -21,6 +26,8 @@ function addNewItem(value) {
     toDoRecords = toDoRecords || [];
     toDoRecords.push(newToDoObj);
     tgStorage.Store(toDoRecords);
+    console.log(newToDoObj);
+    users.Post(newToDoObj);
     monsterUI.bindBgClass(toDoRecords.length);
 
     monsterUI.buildToDoMonster(newToDoObj);

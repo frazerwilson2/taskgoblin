@@ -14232,6 +14232,7 @@ console.log('running');
 var publicFunc = {
   Init: function(){
     console.log('init called');
+
     __WEBPACK_IMPORTED_MODULE_0__database__["a" /* default */].auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
@@ -14241,7 +14242,14 @@ var publicFunc = {
 
         // Attach an asynchronous callback to read the data at our posts reference
         ref.on("value", function(snapshot) {
-          console.log(snapshot.val());
+          // console.log(typeof snapshot.val());
+          let respData = Object.values(snapshot.val());
+          let filterData = respData.filter(function(i){
+            return !i.isTrusted;
+          });
+          // console.log(filterData);
+          var event = new CustomEvent("name-of-event", { "detail": filterData });
+          document.dispatchEvent(event);
         }, function (errorObject) {
           console.log("The read failed: " + errorObject.code);
         });
@@ -26499,8 +26507,6 @@ function stop(id) {
 
 console.log(__WEBPACK_IMPORTED_MODULE_6__user_js__["a" /* default */]);
 
-__WEBPACK_IMPORTED_MODULE_6__user_js__["a" /* default */].Init();
-
 var tgUiFuncs = (function(){
 
 var toDoRecords = null;
@@ -26536,20 +26542,34 @@ function onNewItemSubmit() {
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    toDoRecords = __WEBPACK_IMPORTED_MODULE_0__storage_js__["a" /* default */].Retrieve();
-    if(toDoRecords){
-        __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].bindBgClass(toDoRecords.length);
-        toDoRecords.forEach(function(item) {
-            item.Monster = new __WEBPACK_IMPORTED_MODULE_2__monster_js__["a" /* default */](item.Monster);
-            __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].buildToDoMonster(item);
-            __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].SetPosition(item.id, item.Monster.Position);
-            setInteract();
-        });
-
-        // setPeps();
-        Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#toDoItem').focus();
-    }
+    document.addEventListener("name-of-event", function(e) {
+      console.log(e.detail);
+      initToDoRecords(e.detail);
+    });
+    __WEBPACK_IMPORTED_MODULE_6__user_js__["a" /* default */].Init();
+    /*** LOCALSTORAGE */
+    // toDoRecords = tgStorage.Retrieve();
+    // if(toDoRecords){
+    //     monsterUI.bindBgClass(toDoRecords.length);
+    //     toDoRecords.forEach(function(item) {
+    //         item.Monster = new tgMonster(item.Monster);
+    //         monsterUI.buildToDoMonster(item);
+    //         monsterUI.SetPosition(item.id, item.Monster.Position);
+    //         setInteract();
+    //     });
+    // }
 });
+
+function initToDoRecords(toDoRecords){
+    // console.table(toDoRecords);
+    __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].bindBgClass(toDoRecords.length);
+    toDoRecords.forEach(function(item) {
+        item.Monster = new __WEBPACK_IMPORTED_MODULE_2__monster_js__["a" /* default */](item.Monster);
+        __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].buildToDoMonster(item);
+        __WEBPACK_IMPORTED_MODULE_5__monsterui_js__["a" /* default */].SetPosition(item.id, item.Monster.Position);
+        setInteract();
+    });
+};
 
 Object(__WEBPACK_IMPORTED_MODULE_3__helpers_js__["a" /* default */])('#toDoItem').addEventListener("keyup", function(e) {
     if (e.keyCode === 13) {

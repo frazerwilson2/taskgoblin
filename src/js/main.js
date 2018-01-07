@@ -8,8 +8,6 @@ import users from './user.js';
 
 console.log(users);
 
-users.Init();
-
 var tgUiFuncs = (function(){
 
 var toDoRecords = null;
@@ -45,20 +43,34 @@ function onNewItemSubmit() {
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    toDoRecords = tgStorage.Retrieve();
-    if(toDoRecords){
-        monsterUI.bindBgClass(toDoRecords.length);
-        toDoRecords.forEach(function(item) {
-            item.Monster = new tgMonster(item.Monster);
-            monsterUI.buildToDoMonster(item);
-            monsterUI.SetPosition(item.id, item.Monster.Position);
-            setInteract();
-        });
-
-        // setPeps();
-        el('#toDoItem').focus();
-    }
+    document.addEventListener("name-of-event", function(e) {
+      console.log(e.detail);
+      initToDoRecords(e.detail);
+    });
+    users.Init();
+    /*** LOCALSTORAGE */
+    // toDoRecords = tgStorage.Retrieve();
+    // if(toDoRecords){
+    //     monsterUI.bindBgClass(toDoRecords.length);
+    //     toDoRecords.forEach(function(item) {
+    //         item.Monster = new tgMonster(item.Monster);
+    //         monsterUI.buildToDoMonster(item);
+    //         monsterUI.SetPosition(item.id, item.Monster.Position);
+    //         setInteract();
+    //     });
+    // }
 });
+
+function initToDoRecords(toDoRecords){
+    // console.table(toDoRecords);
+    monsterUI.bindBgClass(toDoRecords.length);
+    toDoRecords.forEach(function(item) {
+        item.Monster = new tgMonster(item.Monster);
+        monsterUI.buildToDoMonster(item);
+        monsterUI.SetPosition(item.id, item.Monster.Position);
+        setInteract();
+    });
+};
 
 el('#toDoItem').addEventListener("keyup", function(e) {
     if (e.keyCode === 13) {

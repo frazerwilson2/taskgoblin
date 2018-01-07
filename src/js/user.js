@@ -8,6 +8,7 @@ console.log('running');
 var publicFunc = {
   Init: function(){
     console.log('init called');
+
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
@@ -17,7 +18,14 @@ var publicFunc = {
 
         // Attach an asynchronous callback to read the data at our posts reference
         ref.on("value", function(snapshot) {
-          console.log(snapshot.val());
+          // console.log(typeof snapshot.val());
+          let respData = Object.values(snapshot.val());
+          let filterData = respData.filter(function(i){
+            return !i.isTrusted;
+          });
+          // console.log(filterData);
+          var event = new CustomEvent("name-of-event", { "detail": filterData });
+          document.dispatchEvent(event);
         }, function (errorObject) {
           console.log("The read failed: " + errorObject.code);
         });

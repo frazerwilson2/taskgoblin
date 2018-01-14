@@ -23,7 +23,7 @@ const monsterUI = {
 	SetPosition: function(monst, pos){
 		document.getElementById(monst).style.top = pos.Top + 'px';
 		document.getElementById(monst).style.left = pos.Left + 'px';
-console.log(monst, pos);
+// console.log(monst, pos);
 	},
 	bindBgClass: function (num) {
 	    el('body').classList.remove('sunset');

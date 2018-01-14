@@ -1,4 +1,5 @@
 import firebase from './database';
+import localDb from './localDb.js';
 
 var tgUsers = (function($){
 var userId;
@@ -7,12 +8,12 @@ console.log('running');
 
 var publicFunc = {
   Init: function(){
-    console.log('init called');
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
         userId = user.providerData[0].uid;
+        localDb.Init(userId);
         // console.log(firebase.database().ref('tasks'));
         var ref = firebase.database().ref("tasks");
 
@@ -24,6 +25,7 @@ var publicFunc = {
             return !i.isTrusted;
           });
           // console.log(filterData);
+          localDb.AddGroup(filterData);
           var event = new CustomEvent("name-of-event", { "detail": filterData });
           document.dispatchEvent(event);
         }, function (errorObject) {

@@ -6,7 +6,8 @@ import opts from './interactOpts.js';
 import monsterUI from './monsterui.js';
 import users from './user.js';
 
-console.log(users);
+// console.log(localDb);
+    'use strict';
 
 var tgUiFuncs = (function(){
 
